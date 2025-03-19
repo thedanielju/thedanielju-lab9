@@ -53,6 +53,15 @@ public class Station {
            ", previous station: " + prevStation + ", next station: " + nextStation;
     }
 
+    @Override
+    public boolean equals(Object current) {
+        if (current instanceof Station) {
+            Station other = (Station) current;
+            return this.name.equals(other.name) && this.color.equals(other.color);
+        }
+        return false;
+    }
+
     ///getter methods, debugging
 
     public String getColor() {
