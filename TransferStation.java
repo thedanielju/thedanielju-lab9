@@ -2,7 +2,7 @@
 import java.util.ArrayList;
 
 public class TransferStation extends Station{
-    private ArrayList<Station> otherStations;
+    public ArrayList<Station> otherStations;
 
     public TransferStation(String color, String name) {
         super(color, name);
