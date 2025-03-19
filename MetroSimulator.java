@@ -88,10 +88,14 @@ public class MetroSimulator{
 
 	public static EndStation makeRedLine(){
 		woodley_park.connect(dupont_circle);
-
+		dupont_circle.connect(farragut_north);
+		farragut_north.connect(metro_center);
+		metro_center.addTransferStationNext(gallery_place);
+		gallery_place.connect(judiciary_square);
 		
-		//connect the other stations here
-
+		woodley_park.makeEnd();
+		judiciary_square.makeEnd();
+		
 		return woodley_park;
 	}
 
