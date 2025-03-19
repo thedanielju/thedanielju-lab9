@@ -104,16 +104,18 @@ public class MetroSimulator{
 		return woodley_park;
 	}
 
-	public static EndStation makePurpleLine(){
-    s1.connect(s2);
-    s2.connect(s3);
-    s3.connect(metro_center);
-    metro_center.addTransferStationNext(s4);
-    s4.connect(s5);
-    
-    s1.makeEnd();
-    s5.makeEnd();
-    
-    return s1;
+	public static EndStation makePurpleLine() {
+		s1.connect(s2);
+		s2.connect(s3);
+		
+		metro_center.addTransferStationPrev(s3);
+		
+		metro_center.addTransferStationNext(s4);
+		s4.connect(s5);
+		
+		s1.makeEnd();
+		s5.makeEnd();
+		
+		return s1;
 	}
 }
