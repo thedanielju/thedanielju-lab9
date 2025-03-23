@@ -1,5 +1,6 @@
 //adds functionality for transfer points between different lines
 import java.util.ArrayList;
+import java.util.List;
 
 public class TransferStation extends Station{
     public ArrayList<Station> otherStations;
@@ -33,29 +34,48 @@ public class TransferStation extends Station{
 
 @Override
 public int tripLength(Station destination) {
-
-    // direct path from Station
-    int directLength = super.tripLength(destination);
-    if (directLength >= 0) {
-        return directLength;
+    //same station
+    if (this.equals(destination)) {
+        return 0;
     }
-
-    for (Station transfer : otherStations) {
-        if (transfer.equals(this)) {
-            continue;
-        }
-       
-        int transferLength = transfer.tripLength(destination);
-
-        if (transferLength >= 0) { //path from transfer station
-            return transferLength + 1;
-        }
     
-    }
-
-    return -1; //if no path is found
+    //list of visited stations to avoid loop
+    List<Station> visited = new ArrayList<>();
+    visited.add(this);
+    
+    return tripLengthHelper(destination, visited);
 }
 
+@Override
+public int tripLengthHelper(Station destination, List<Station> visited) {
+    //destination immediately found
+    if (this.equals(destination)) {
+        return 0;
+    }
+    
+    //direct path
+    if (next != null && !visited.contains(next)) {
+        visited.add(next);
+        int nextLength = next.tripLengthHelper(destination, visited);
+        if (nextLength >= 0) {
+            return nextLength + 1;
+        }
+    }
+    
+    //transfer stations
+    for (Station transfer : otherStations) {
+        if (!visited.contains(transfer)) {
+            visited.add(transfer);
+            int transferLength = transfer.tripLengthHelper(destination, visited);
+            if (transferLength >= 0) {
+                return transferLength + 1;
+            }
+        }
+    }
+    
+    //no path
+    return -1;
+}
 
 
 @Override

@@ -38,32 +38,34 @@ public class Station {
     }
 
     public int tripLength(Station destination) {
-        int numStops = 0;
-        Station current = this;
-        List <Station> visited = new ArrayList<>();
+        // same station
         if (this.equals(destination)) {
             return 0;
         }
-        
-        if (!this.color.equals(destination.getColor())) {
-            return -1;
+
+        // track visited stations
+        List<Station> visited = new ArrayList<>();
+        visited.add(this);
+
+        return tripLengthHelper(destination, visited);
+    }
+
+    public int tripLengthHelper(Station destination, List<Station> visited) {
+        // destination found
+        if (this.equals(destination)) {
+            return 0;
         }
-        
-        while (current != null && !current.equals(destination)) {
-            if (visited.contains(current)) {
-                return -1; //detected inf loop
+
+        // attempt to move to next station
+        if (next != null && !visited.contains(next)) {
+            visited.add(next);
+            int nextLength = next.tripLengthHelper(destination, visited);
+            if (nextLength >= 0) {
+                return nextLength + 1;
             }
-    
-            visited.add(current);
-            current = current.next;
-            numStops++;
         }
-        
-        if (current == null) {
-            return -1;
-        }
-        
-        return numStops;
+
+        return -1; //path not fvound
     }
 
     @Override
