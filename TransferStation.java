@@ -32,6 +32,33 @@ public class TransferStation extends Station{
 //String expected = "TRANSFERSTATION Museum: pink line, in service: true, previous station: none, next station: none\n\tTransfers: \n";
 
 @Override
+public int tripLength(Station destination) {
+
+    // direct path from Station
+    int directLength = super.tripLength(destination);
+    if (directLength >= 0) {
+        return directLength;
+    }
+
+    for (Station transfer : otherStations) {
+        if (transfer.equals(this)) {
+            continue;
+        }
+       
+        int transferLength = transfer.tripLength(destination);
+
+        if (transferLength >= 0) { //path from transfer station
+            return transferLength + 1;
+        }
+    
+    }
+
+    return -1; //if no path is found
+}
+
+
+
+@Override
 public String toString() {
     String prevStation;
     String nextStation;

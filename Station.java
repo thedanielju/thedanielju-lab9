@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Station {
     protected String color;
     protected String name;
@@ -32,6 +35,35 @@ public class Station {
     public boolean switchAvailable() {
         this.available = !this.available;
         return this.available;
+    }
+
+    public int tripLength(Station destination) {
+        int numStops = 0;
+        Station current = this;
+        List <Station> visited = new ArrayList<>();
+        if (this.equals(destination)) {
+            return 0;
+        }
+        
+        if (!this.color.equals(destination.getColor())) {
+            return -1;
+        }
+        
+        while (current != null && !current.equals(destination)) {
+            if (visited.contains(current)) {
+                return -1; //detected inf loop
+            }
+    
+            visited.add(current);
+            current = current.next;
+            numStops++;
+        }
+        
+        if (current == null) {
+            return -1;
+        }
+        
+        return numStops;
     }
 
     @Override
