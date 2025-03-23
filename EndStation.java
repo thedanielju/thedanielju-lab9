@@ -22,24 +22,30 @@ public class EndStation extends Station{
     public int tripLength(Station destination) {
         int numStops = 0;
         Station current = this;
-
+    
         if (this.equals(destination)) {
             return 0;
         }
-
+    
         if (!this.color.equals(destination.getColor())) {
             return -1;
         }
-
-        while (current != destination) {
+    
+        while (current != null && !current.equals(destination)) {
             current = current.next;
             numStops++;
-
-            if (current.equals(destination)) {
-                return numStops;
+    
+            // check if we have looped back to the starting point
+            if (current.equals(this)) {
+                return -1;
             }
         }
-        return -1;
+    
+        if (current == null) {
+            return -1;
+        }
+    
+        return numStops;
     }
 
     @Override
